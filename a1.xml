@@ -1,0 +1,141 @@
+<!-- =================================================
+    Copyright 2021 Vikash Kumar
+    Model   :: unitree_a1 (MuJoCoV2.0)
+    Author  :: Vikash Kumar (vikashplus@gmail.com)
+    Details :: https://github.com/vikashplus/unitree_sim
+    Credit  :: for parameter details https://github.com/unitreerobotics/unitree_pybullet
+    License :: Under Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+====================================================== -©vk©-->
+
+<mujoco model="unitree_a1">
+    <compiler angle="radian"/>
+    <size njmax="500" nconmax="100"/>
+    <asset>
+        <mesh name="trunk" file="../unitree_sim/meshes/a1/trunk.stl"/>
+        <mesh name="hip" file="../unitree_sim/meshes/a1/hip.stl"/>
+        <mesh name="thigh_mirror" file="../unitree_sim/meshes/a1/thigh_mirror.stl"/>
+        <mesh name="calf" file="../unitree_sim/meshes/a1/calf.stl"/>
+        <mesh name="thigh" file="../unitree_sim/meshes/a1/thigh.stl"/>
+        <material name="metal_grey" specular=".8" shininess=".8"/>
+    </asset>
+
+    <default>
+        <default class="unitree">
+            <joint limited="true" damping="10" armature="0.001" frictionloss=".2" range="-1.57 1.57"/>
+            <geom contype="1" conaffinity="0" condim="4" margin="0.001" solref=".02 1" solimp=".8 .9 .01" group="4" rgba=".4 .5 .6 1"/>
+            <position ctrllimited="true"/>
+            <default class="viz_metal_grey">
+                <geom contype="0" conaffinity="0" type="mesh" material="metal_grey" rgba=".2 .2 .25 1" mass="0" group="1"/>
+            </default>
+        </default>
+    </default>
+
+    <include file="../unitree_sim/basic_scene.xml"/>
+
+    <worldbody>
+        <body name="a1_torso" pos="0 0 0.45" childclass="unitree">
+            <geom size="0.0005 0.0005 0.0005" type="box" contype="0" conaffinity="0" group="1"/>
+            <geom class="viz_metal_grey" mesh="trunk"/>
+            <geom size="0.1335 0.097 0.057" type="box"/>
+            <geom size="0.0005 0.0005 0.0005" type="box" contype="0" conaffinity="0" group="1" rgba="0.8 0 0 1"/>
+            <geom size="0.0005 0.0005 0.0005" type="box" rgba="0.8 0 0 1"/>
+            <freejoint/>
+            <body name="FR_hip" pos="0.183 -0.047 0">
+                <inertial pos="-0.003311 -0.000635 3.1e-05" quat="0.507528 0.506268 0.491507 0.494499" mass="0.696" diaginertia="0.000807752 0.00055293 0.000468983"/>
+                <joint name="FR_hip" pos="0 0 0" axis="1 0 0" limited="true" range="-0.802851 0.802851"/>
+                <geom quat="0 1 0 0" class="viz_metal_grey" mesh="hip"/>
+                <geom size="0.046 0.02" quat="0.707107 0.707107 0 0" type="cylinder"/>
+                <body name="FR_thigh" pos="0 -0.08505 0">
+                    <inertial pos="-0.003237 0.022327 -0.027326" quat="0.999125 -0.00256393 -0.0409531 -0.00806091" mass="1.013" diaginertia="0.00555739 0.00513936 0.00133944"/>
+                    <joint name="FR_thigh" pos="0 0 0" axis="0 1 0" limited="true" range="-1.0472 4.18879"/>
+                    <geom class="viz_metal_grey" mesh="thigh_mirror"/>
+                    <geom size="0.1 0.01225 0.017" pos="0 0 -0.1" quat="0.707107 0 0.707107 0" type="box"/>
+                    <body name="FR_calf" pos="0 0 -0.2">
+                        <inertial pos="0.00472659 0 -0.131975" quat="0.706886 0.017653 0.017653 0.706886" mass="0.226" diaginertia="0.00340344 0.00339393 3.54834e-05"/>
+                        <joint name="FR_calf" pos="0 0 0" axis="0 1 0" limited="true" range="-2.69653 -0.916298"/>
+                        <geom class="viz_metal_grey" mesh="calf"/>
+                        <geom size="0.1 0.008 0.008" pos="0 0 -0.1" quat="0.707107 0 0.707107 0" type="box"/>
+                        <geom size="0.01" pos="0 0 -0.2" contype="0" conaffinity="0" group="1"/>
+                        <geom size="0.02" pos="0 0 -0.2"/>
+                    </body>
+                </body>
+            </body>
+            <body name="FL_hip" pos="0.183 0.047 0">
+                <inertial pos="-0.003311 0.000635 3.1e-05" quat="0.494499 0.491507 0.506268 0.507528" mass="0.696" diaginertia="0.000807752 0.00055293 0.000468983"/>
+                <joint name="FL_hip" pos="0 0 0" axis="1 0 0" limited="true" range="-0.802851 0.802851"/>
+                <geom class="viz_metal_grey" mesh="hip"/>
+                <geom size="0.046 0.02" quat="0.707107 0.707107 0 0" type="cylinder"/>
+                <body name="FL_thigh" pos="0 0.08505 0">
+                    <inertial pos="-0.003237 -0.022327 -0.027326" quat="0.999125 0.00256393 -0.0409531 0.00806091" mass="1.013" diaginertia="0.00555739 0.00513936 0.00133944"/>
+                    <joint name="FL_thigh" pos="0 0 0" axis="0 1 0" limited="true" range="-1.0472 4.18879"/>
+                    <geom class="viz_metal_grey" mesh="thigh"/>
+                    <geom size="0.1 0.01225 0.017" pos="0 0 -0.1" quat="0.707107 0 0.707107 0" type="box"/>
+                    <body name="FL_calf" pos="0 0 -0.2">
+                        <inertial pos="0.00472659 0 -0.131975" quat="0.706886 0.017653 0.017653 0.706886" mass="0.226" diaginertia="0.00340344 0.00339393 3.54834e-05"/>
+                        <joint name="FL_calf" pos="0 0 0" axis="0 1 0" limited="true" range="-2.69653 -0.916298"/>
+                        <geom class="viz_metal_grey" mesh="calf"/>
+                        <geom size="0.1 0.008 0.008" pos="0 0 -0.1" quat="0.707107 0 0.707107 0" type="box"/>
+                        <geom size="0.01" pos="0 0 -0.2" contype="0" conaffinity="0" group="1"/>
+                        <geom size="0.02" pos="0 0 -0.2"/>
+                    </body>
+                </body>
+            </body>
+            <body name="RR_hip" pos="-0.183 -0.047 0">
+                <inertial pos="0.003311 -0.000635 3.1e-05" quat="0.491507 0.494499 0.507528 0.506268" mass="0.696" diaginertia="0.000807752 0.00055293 0.000468983"/>
+                <joint name="RR_hip" pos="0 0 0" axis="1 0 0" limited="true" range="-0.802851 0.802851"/>
+                <geom quat="0 0 0 -1" class="viz_metal_grey" mesh="hip"/>
+                <geom size="0.046 0.02" quat="0.707107 0.707107 0 0" type="cylinder"/>
+                <body name="RR_thigh" pos="0 -0.08505 0">
+                    <inertial pos="-0.003237 0.022327 -0.027326" quat="0.999125 -0.00256393 -0.0409531 -0.00806091" mass="1.013" diaginertia="0.00555739 0.00513936 0.00133944"/>
+                    <joint name="RR_thigh" pos="0 0 0" axis="0 1 0" limited="true" range="-1.0472 4.18879"/>
+                    <geom class="viz_metal_grey" mesh="thigh_mirror"/>
+                    <geom size="0.1 0.01225 0.017" pos="0 0 -0.1" quat="0.707107 0 0.707107 0" type="box"/>
+                    <body name="RR_calf" pos="0 0 -0.2">
+                        <inertial pos="0.00472659 0 -0.131975" quat="0.706886 0.017653 0.017653 0.706886" mass="0.226" diaginertia="0.00340344 0.00339393 3.54834e-05"/>
+                        <joint name="RR_calf" pos="0 0 0" axis="0 1 0" limited="true" range="-2.69653 -0.916298"/>
+                        <geom class="viz_metal_grey" mesh="calf"/>
+                        <geom size="0.1 0.008 0.008" pos="0 0 -0.1" quat="0.707107 0 0.707107 0" type="box"/>
+                        <geom size="0.01" pos="0 0 -0.2" contype="0" conaffinity="0" group="1"/>
+                        <geom size="0.02" pos="0 0 -0.2"/>
+                    </body>
+                </body>
+            </body>
+            <body name="RL_hip" pos="-0.183 0.047 0">
+                <inertial pos="0.003311 0.000635 3.1e-05" quat="0.506268 0.507528 0.494499 0.491507" mass="0.696" diaginertia="0.000807752 0.00055293 0.000468983"/>
+                <joint name="RL_hip" pos="0 0 0" axis="1 0 0" limited="true" range="-0.802851 0.802851"/>
+                <geom quat="0 0 1 0" class="viz_metal_grey" mesh="hip"/>
+                <geom size="0.046 0.02" quat="0.707107 0.707107 0 0" type="cylinder"/>
+                <body name="RL_thigh" pos="0 0.08505 0">
+                    <inertial pos="-0.003237 -0.022327 -0.027326" quat="0.999125 0.00256393 -0.0409531 0.00806091" mass="1.013" diaginertia="0.00555739 0.00513936 0.00133944"/>
+                    <joint name="RL_thigh" pos="0 0 0" axis="0 1 0" limited="true" range="-1.0472 4.18879"/>
+                    <geom class="viz_metal_grey" mesh="thigh"/>
+                    <geom size="0.1 0.01225 0.017" pos="0 0 -0.1" quat="0.707107 0 0.707107 0" type="box"/>
+                    <body name="RL_calf" pos="0 0 -0.2">
+                        <inertial pos="0.00472659 0 -0.131975" quat="0.706886 0.017653 0.017653 0.706886" mass="0.226" diaginertia="0.00340344 0.00339393 3.54834e-05"/>
+                        <joint name="RL_calf" pos="0 0 0" axis="0 1 0" limited="true" range="-2.69653 -0.916298"/>
+                        <geom class="viz_metal_grey" mesh="calf"/>
+                        <geom size="0.1 0.008 0.008" pos="0 0 -0.1" quat="0.707107 0 0.707107 0" type="box"/>
+                        <geom size="0.01" pos="0 0 -0.2" contype="0" conaffinity="0" group="1"/>
+                        <geom size="0.02" pos="0 0 -0.2"/>
+                    </body>
+                </body>
+            </body>
+        </body>
+    </worldbody>
+
+    <actuator>
+        <position name="FR_hip" kp="60" joint="FR_hip" class="unitree" ctrlrange="-0.802851 0.802851"/>
+        <position name="FR_thigh" kp="60" joint="FR_thigh" class="unitree" ctrlrange="-1.0472 4.18879"/>
+        <position name="FR_calf" kp="93.3" joint="FR_calf" class="unitree" ctrlrange="-2.69653 -0.916298"/>
+        <position name="FL_hip" kp="60" joint="FL_hip" class="unitree" ctrlrange="-0.802851 0.802851"/>
+        <position name="FL_thigh" kp="60" joint="FL_thigh" class="unitree" ctrlrange="-1.0472 4.18879"/>
+        <position name="FL_calf" kp="93.3" joint="FL_calf" class="unitree" ctrlrange="-2.69653 -0.916298"/>
+        <position name="RR_hip" kp="60" joint="RR_hip" class="unitree" ctrlrange="-0.802851 0.802851"/>
+        <position name="RR_thigh" kp="60" joint="RR_thigh" class="unitree" ctrlrange="-1.0472 4.18879"/>
+        <position name="RR_calf" kp="93.3" joint="RR_calf" class="unitree" ctrlrange="-2.69653 -0.916298"/>
+        <position name="RL_hip" kp="60" joint="RL_hip" class="unitree" ctrlrange="-0.802851 0.802851"/>
+        <position name="RL_thigh" kp="60" joint="RL_thigh" class="unitree" ctrlrange="-1.0472 4.18879"/>
+        <position name="RL_calf" kp="93.3" joint="RL_calf" class="unitree" ctrlrange="-2.69653 -0.916298"/>
+    </actuator>
+
+</mujoco>
